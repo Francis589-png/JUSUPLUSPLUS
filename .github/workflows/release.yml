@@ -18,12 +18,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e '.[dev]'
-      - name: Build plugin package
-        run: |
-          python projects/unreal_plugin/tools/package_unreal_plugin.py --out projects/unreal_plugin/artifacts
-      - name: Create GitHub Release and upload artifact
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        with:
-          files: projects/unreal_plugin/artifacts/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
