@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jusu-language"
-version = "0.1.0"
+version = "0.1.1"
 description = "Jusu++ — a small multi-backend scripting language prototype"
 readme = "README.md"
 license = { text = "MIT" }
