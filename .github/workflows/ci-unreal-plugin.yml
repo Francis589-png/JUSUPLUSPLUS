@@ -1,0 +1,39 @@
+name: CI — Unreal Plugin
+
+on:
+  push:
+    paths:
+      - 'projects/unreal_plugin/**'
+  pull_request:
+    paths:
+      - 'projects/unreal_plugin/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Set up Node.js (for JS bridge tests)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+          pip install cryptography nbformat
+      - name: Run plugin tests
+        run: |
+          pytest -q projects/unreal_plugin/tests -q
+      - name: Package plugin
+        run: |
+          python projects/unreal_plugin/tools/package_unreal_plugin.py --out projects/unreal_plugin/artifacts
+      - name: Upload plugin package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unreal-plugin-zip
+          path: projects/unreal_plugin/artifacts/*.zip
