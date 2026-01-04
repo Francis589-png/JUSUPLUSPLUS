@@ -1,0 +1,6 @@
+# Data science example using np module
+arr = np.array([1, 2, 3, 4])
+s = np.sum(arr)
+mean_val = np.mean(arr)
+say "Sum: " + str(s)
+say "Mean: " + str(mean_val)

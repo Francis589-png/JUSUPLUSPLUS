@@ -1,0 +1,10 @@
+[project]
+name = "jusu-example-plugin"
+version = "0.0.1"
+requires-python = ">=3.10"
+description = "Example plugin for Jusu++ (demonstration only)"
+
+[project.entry-points]
+"jusu.plugins" = [
+    "example = example_plugin.plugin:load"
+]

@@ -1,0 +1,6 @@
+# RPG: simple NPC dialog and quest gating
+fn npc_dialog(player, npc_state) {
+  if (!player.quest_started && npc_state.has_quest) { return {'say': 'Would you take this quest?', 'offer_quest': true} }
+  if (player.quest_completed && npc_state.reward_ready) { return {'say': 'Thank you! Here is your reward.', 'give_reward': true} }
+  return {'say': 'Good day, traveler.'}
+}

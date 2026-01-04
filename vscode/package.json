@@ -1,0 +1,19 @@
+{
+  "name": "jusuplusplus-lsp-client",
+  "displayName": "Jusu++ Language Client (minimal)",
+  "description": "Minimal VS Code client to launch the Jusu++ LSP server",
+  "version": "0.0.1",
+  "engines": { "vscode": "^1.60.0" },
+  "categories": ["Other"],
+  "activationEvents": ["onLanguage:jusu"],
+  "main": "extension.js",
+  "contributes": {
+    "languages": [{ "id": "jusu", "extensions": [".jusu"], "aliases": ["Jusu++"] }]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^7.0.0"
+  }
+}

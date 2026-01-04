@@ -1,0 +1,8 @@
+# Platformer: simple AI for enemy patrol and jump behavior
+fn enemy_ai(player_x, enemy) {
+  if (player_x > enemy.x + 10) { enemy.dir = 1 }
+  if (player_x < enemy.x - 10) { enemy.dir = -1 }
+  enemy.vx = 2 * enemy.dir
+  if (enemy.on_ground and player_x > enemy.x and player_x - enemy.x < 5) { enemy.jump = true }
+  return enemy
+}

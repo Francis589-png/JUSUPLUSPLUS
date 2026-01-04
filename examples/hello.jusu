@@ -1,0 +1,29 @@
+# Hello World in Jusu++
+# ======================
+
+# Variables with 'is'
+name is "Alice"
+age = 25  # You can also use =
+
+# Math operations
+birth_year = 2024 - age
+next_age = age + 1
+
+# String concatenation
+say "Hello " + name + "!"
+say "You are " + str(age) + " years old"
+say "You were born in " + str(birth_year)
+say "Next year you'll be " + str(next_age)
+
+# More math
+x = 10
+y = 5
+sum = x + y
+product = x * y
+
+say "x + y = " + str(sum)
+say "x * y = " + str(product)
+
+# You can reassign variables
+name = "Bob"
+say "Now name is " + name

@@ -1,0 +1,7 @@
+# RTS: unit behavior script (harvest/build/attack)
+fn unit_decide(unit, world_state) {
+  if (unit.cargo < unit.capacity && world_state.nearest_resource) { return {'task': 'harvest', 'target': world_state.nearest_resource} }
+  if (world_state.enemy_nearby) { return {'task': 'attack', 'target': world_state.enemy_nearby} }
+  if (unit.idle) { return {'task': 'patrol'} }
+  return {'task': 'idle'}
+}

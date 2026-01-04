@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Node.js (for JS bridge tests)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install --upgrade pytest pytest-cov flake8
+        pip install nbformat cryptography
+        # Ensure optional tooling for notebooks and TLS tests is present where possible
+        node --version || true
+
+    - name: Install pre-commit
+      run: |
+        pip install pre-commit
+        pre-commit run --all-files || true
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: "pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}"
+
+    - name: Lint
+      run: |
+        flake8
+
+    - name: Run tests with coverage
+      run: |
+        pytest --maxfail=1 -q --cov=runtime --cov-report=xml --cov-fail-under=70
+
+    - name: Upload coverage (optional)
+      if: always()
+      run: echo "Coverage XML available at ./coverage.xml"
+
+  test-windows:
+    name: Windows tests
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Set up Node.js (for JS bridge tests)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[dev]'
+          pip install nbformat cryptography
+      - name: Run tests
+        shell: powershell
+        run: |
+          pytest --maxfail=1 -q --junitxml=pytest-windows.xml
